@@ -1,5 +1,5 @@
 class Employee
-    attr_reader :boss, :salary
+    attr_reader :boss, :salary, :name
     def initialize (name, title, salary, boss)
         @name = name
         @title = title
@@ -20,16 +20,21 @@ class Manager < Employee
         @employees = employees
     end
 
-    def bonus(multiplier)
-        total_bonus = 0
+    def all_employees()
+        all_emps = []
         @employees.each do |employee|
+            all_emps << employee
             if employee.class.method_defined?(:employees)
-                total_bonus += employee.bonus(multiplier)
-            else
-                total_bonus += employee.salary
+                all_emps += employee.all_employees
             end
         end 
-        total_bonus
+        all_emps
+
+    end
+
+    def bonus(multiplier)
+        total_bonus = self.all_employees.sum{|emp| emp.salary}
+        total_bonus * multiplier
     end
     
 end
