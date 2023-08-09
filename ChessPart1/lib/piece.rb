@@ -56,7 +56,7 @@ class NullPiece < Piece
 
     def initialize
         # if we dont have initialize then its gonna complain abt not passing enough args, which in our case we dont want to do
-        @symbol = :Null
+        @symbol = " "
         @color = :grey
     end
 
@@ -67,6 +67,10 @@ class Knight < Piece
 
     include Stepable
 
+    def initialize(color, pos, board)
+        super(color, :N, pos, board)
+    end
+
     def move_diffs
         [[-2,1], [-2, -1], [2,1], [2,-1], [-1,2], [-1, -2], [1,2], [1, -2]]
     end
@@ -76,6 +80,10 @@ end
 class King < Piece 
     include Stepable
 
+    def initialize(color, pos, board)
+        super(color, :K, pos, board)
+    end
+
     def move_diffs
         [[-1,-1], [-1,1], [1,1], [1,-1], [-1,0], [0,1], [1,0], [0,1]]
     end
@@ -84,6 +92,10 @@ end
 
 class Queen < Piece
     include Slideable
+
+    def initialize(color, pos, board)
+        super(color, :Q, pos, board)
+    end
     
     def move_dirs
         [[-1,-1], [-1,1], [1,1], [1,-1], [-1,0], [0,1], [1,0], [0,1]]
@@ -95,6 +107,10 @@ class Bishop < Piece
 
     include Slideable
 
+    def initialize(color, pos, board)
+        super(color, :B, pos, board)
+    end
+
     def move_dirs
         [[-1,-1], [-1,1], [1,1], [1,-1]]
     end
@@ -105,6 +121,10 @@ class Rook < Piece
 
     include Slideable
 
+    def initialize(color, pos, board)
+        super(color, :R, pos, board)
+    end
+
     def move_dirs
         [[-1,0], [0,1], [1,0], [0,1]]
     end
@@ -112,8 +132,8 @@ end
 
 class Pawn < Piece
 
-    def initialize(color, symbol, curr_pos, board)
-        super
+    def initialize(color, curr_pos, board)
+        super(color,:P,  curr_pos, board)
         @start_pos = curr_pos
     end
 

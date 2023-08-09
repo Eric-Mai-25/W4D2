@@ -88,19 +88,9 @@ class Cursor
   end
 
   def update_pos(diff)
-    puts "hey this is diff #{diff}"
     new_row, new_col = @cursor_pos[0]+diff[0], @cursor_pos[1]+diff[1]
-
-    puts new_row
-    puts new_col
-    puts "Hey is it a valid position ??"
-    p @board.valid_pos?([new_row, new_col])
-    
     if @board.valid_pos?([new_row, new_col])
-      puts "hey did we update??"
-
       @cursor_pos = [new_row, new_col]
-      puts "current_pos #{cursor_pos}"
     end
   end
 end

@@ -14,15 +14,15 @@ class Board
         (0...sub_row.length).each{|jdx|
             case 
             when [0,7].include?(jdx)
-                @rows[idx][jdx] = Rook.new(color, :Rook, [idx, jdx], self)
+                @rows[idx][jdx] = Rook.new(color, [idx, jdx], self)
             when [1,6].include?(jdx)
-                @rows[idx][jdx] = Knight.new(color, :Knight, [idx, jdx], self)
+                @rows[idx][jdx] = Knight.new(color, [idx, jdx], self)
             when [2,5].include?(jdx)
-                @rows[idx][jdx] = Bishop.new(color, :Bishop, [idx, jdx], self)
+                @rows[idx][jdx] = Bishop.new(color, [idx, jdx], self)
             when jdx == 3
-                @rows[idx][jdx] = King.new(color, :King, [idx, jdx], self)
+                @rows[idx][jdx] = King.new(color, [idx, jdx], self)
             else
-                @rows[idx][jdx] = Queen.new(color, :Queen, [idx, jdx], self)
+                @rows[idx][jdx] = Queen.new(color, [idx, jdx], self)
             end  
         }
     end
@@ -32,9 +32,9 @@ class Board
             if idx == 0
                 populate_pieces(sub_row, idx, :yellow)
             elsif idx == 1
-                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:yellow, :Pawn, [idx, jdx], self)}
+                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:yellow, [idx, jdx], self)}
             elsif idx == 6
-                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:white, :Pawn, [idx, jdx], self)}
+                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:white, [idx, jdx], self)}
             elsif idx == 7
                 populate_pieces(sub_row, idx, :white)
             else
@@ -82,17 +82,19 @@ class Board
         row >= 0 && row <= 7 && col >= 0 && col <= 7
     end
 
+    def in_check?(color)
+
+    end
+
 end
 
-# b = Board.new()
-# p b[[6,0]]
-# p b[[5,1]]
-# b.move_piece([0,1],[2,2])
-# p ' ---'
-# b.move_piece([2,2],[4,1])
-# p ' ---'
-# b.move_piece([4,1],[5,3])
-# p ' ---'
-# b.move_piece([6,2],[5,3])
-# p b[[5,3]]
-# p b[[6,2]]
+b = Board.new()
+
+puts "f2, f3" 
+p b.move_piece([6,5], [6,4])
+puts "e7, e5" 
+p b.move_piece([1,4], [3,4])
+puts "g2, g4" 
+p b.move_piece([6,6], [6,4])
+puts "d8, h4" 
+p b.move_piece([0,3], [4,7])
