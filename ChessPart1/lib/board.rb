@@ -80,11 +80,17 @@ class Board
 end
 
 b = Board.new()
-p b[[0,4]]
-p b[[2,3]]
-b.move_piece([0,4],[2,3])
-p b[[0,4]]
-p b[[2,3]]
+p b[[6,0]]
+p b[[5,1]]
+b.move_piece([0,1],[5,3])
+p ' ---'
+b.move_piece([2,2],[4,1])
+p ' ---'
+b.move_piece([4,1],[5,3])
+p ' ---'
+b.move_piece([6,2],[5,3])
+p b[[5,3]]
+p b[[6,2]]
 
 
 
