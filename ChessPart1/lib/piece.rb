@@ -1,5 +1,6 @@
 require_relative 'module.rb'
 require 'singleton'
+
 class Piece
 
     attr_reader :symbol , :color
@@ -51,8 +52,12 @@ end
 
 class NullPiece < Piece
 
-    def initialize(curr_pos, board)
-        super(nil, :NullPiece, curr_pos, board)
+    include Singleton
+
+    def initialize
+        # if we dont have initialize then its gonna complain abt not passing enough args, which in our case we dont want to do
+        @symbol = :Null
+        @color = :grey
     end
 
 end
@@ -144,8 +149,8 @@ class Pawn < Piece
     end
 
     def foward_dir
-        return -1 if color == 'White'
-        return 1 if color == 'Black'
+        return -1 if color == 'white'
+        return 1 if color == ':yellow'
     end
 
     def foward_steps(steps=1)
@@ -165,8 +170,8 @@ class Pawn < Piece
 
 
     def side_attacks
-        return [[pos[0]-1,pos[1]-1],[pos[0]-1,pos[1]+1]] if color == "White"
-        return [[pos[0]+1,pos[1]-1],[pos[0]+1,pos[1]+1]] if color == "Black"
+        return [[pos[0]-1,pos[1]-1],[pos[0]-1,pos[1]+1]] if color == :white
+        return [[pos[0]+1,pos[1]-1],[pos[0]+1,pos[1]+1]] if color == :yellow
     end
 end
 

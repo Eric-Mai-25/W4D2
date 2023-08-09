@@ -3,7 +3,7 @@ require_relative "piece"
 
 class Board
 
-    
+    attr_reader :rows
 
     def initialize()
         @rows = Array.new(8) {Array.new(8)}
@@ -30,15 +30,15 @@ class Board
     def populate_board
         @rows.each_with_index{|sub_row, idx|
             if idx == 0
-                populate_pieces(sub_row, idx, "Black")
+                populate_pieces(sub_row, idx, :yellow)
             elsif idx == 1
-                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new("Black", :Pawn, [idx, jdx], self)}
+                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:yellow, :Pawn, [idx, jdx], self)}
             elsif idx == 6
-                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new("White", :Pawn, [idx, jdx], self)}
+                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = Pawn.new(:white, :Pawn, [idx, jdx], self)}
             elsif idx == 7
-                populate_pieces(sub_row, idx, "White")
+                populate_pieces(sub_row, idx, :white)
             else
-                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = NullPiece.new([idx, jdx], self)}
+                sub_row.each_with_index{|ele, jdx| @rows[idx][jdx] = NullPiece.instance}
             end
         }
     end
@@ -74,23 +74,25 @@ class Board
         end
 
         piece_instance.pos = end_pos
-        self[end_pos], self[start_pos] = piece_instance , NullPiece.new(start_pos, self)
+        self[end_pos], self[start_pos] = piece_instance , NullPiece.instance
+    end
+
+    def valid_pos?(new_pos)
+        row, col = new_pos
+        row >= 0 && row <= 7 && col >= 0 && col <= 7
     end
 
 end
 
-b = Board.new()
-p b[[6,0]]
-p b[[5,1]]
-b.move_piece([0,1],[5,3])
-p ' ---'
-b.move_piece([2,2],[4,1])
-p ' ---'
-b.move_piece([4,1],[5,3])
-p ' ---'
-b.move_piece([6,2],[5,3])
-p b[[5,3]]
-p b[[6,2]]
-
-
-
+# b = Board.new()
+# p b[[6,0]]
+# p b[[5,1]]
+# b.move_piece([0,1],[2,2])
+# p ' ---'
+# b.move_piece([2,2],[4,1])
+# p ' ---'
+# b.move_piece([4,1],[5,3])
+# p ' ---'
+# b.move_piece([6,2],[5,3])
+# p b[[5,3]]
+# p b[[6,2]]
