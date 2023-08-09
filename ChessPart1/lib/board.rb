@@ -68,7 +68,6 @@ class Board
         end
 
         piece_instance = self[start_pos]
-        p piece_instance.moves
         
         if !piece_instance.moves.include?(end_pos)
             raise "Cant move to end pos #{end_pos}"
@@ -80,15 +79,12 @@ class Board
 
 end
 
-# p1 = Player.new("Black")
-# p2 =Player.new("White")
-
 b = Board.new()
 p b[[0,4]]
-p b[[0,3]]
-b.move_piece([0,4],[0,3])
+p b[[2,3]]
+b.move_piece([0,4],[2,3])
 p b[[0,4]]
-p b[[0,3]]
+p b[[2,3]]
 
 
 
