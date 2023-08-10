@@ -15,14 +15,13 @@ module Slideable
         while growing
             new_row = row+dx
             new_col = col+dy
-            
             if !move_into_check?([new_row, new_col])
                 growing = false
             else
                 unblocked_moves << [new_row, new_col]
                 row, col = new_row, new_col
                 # to stop growing if you hit the opposite color piece
-                if @board[[row, col]].color != self.color
+                if @board[[row, col]].color != :grey && @board[[row, col]].color != self.color
                     growing = false
                 end
             end

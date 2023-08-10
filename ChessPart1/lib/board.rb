@@ -20,9 +20,9 @@ class Board
             when [2,5].include?(jdx)
                 @rows[idx][jdx] = Bishop.new(color, [idx, jdx], self)
             when jdx == 3
-                @rows[idx][jdx] = King.new(color, [idx, jdx], self)
-            else
                 @rows[idx][jdx] = Queen.new(color, [idx, jdx], self)
+            else
+                @rows[idx][jdx] = King.new(color, [idx, jdx], self)
             end  
         }
     end
@@ -82,19 +82,55 @@ class Board
         row >= 0 && row <= 7 && col >= 0 && col <= 7
     end
 
-    def in_check?(color)
+    def find_king(color)
+        @rows.each_with_index{|sub_row, idx|
+            sub_row.each_with_index{|piece, jdx|
+                return [idx, jdx] if piece.is_a?(King) && piece.color == color
+            }
+        }
+    end
 
+    def in_check?(color)
+        #find the kings position by color
+        kings_pos = find_king(color)
+        @rows.any?{|sub_row|
+            sub_row.any?{|piece|
+                if !piece.empty? && piece.moves.include?(kings_pos)
+                    return true
+                end
+            }
+        }
+    end
+
+    def dup()
+        board_dup = Board.new()
+        @rows.each_with_index{|sub_row, idx|
+            sub_row.each_with_index{|piece, jdx|
+                piece.is_a?(NullPiece) ? new_piece_inst = NullPiece.instance : new_piece_inst = piece.class.new(piece.color, [idx, jdx], board_dup)
+                
+                board_dup[[idx, jdx]] = new_piece_inst
+            }
+        }
+        board_dup
+    end
+
+    def valid_moves(color)
+        @rows.any?{|sub_row|
+            sub_row.any?{|piece|
+                if piece.empty? || piece.color != color
+                    next
+                end
+
+                piece.moves.any?{|pos|
+                    !piece.still_in_check?(pos)
+                }
+            }
+        }
+    end
+
+    def checkmate?(color)
+        return in_check?(color) && !valid_moves(color)
     end
 
 end
 
-b = Board.new()
-
-puts "f2, f3" 
-p b.move_piece([6,5], [6,4])
-puts "e7, e5" 
-p b.move_piece([1,4], [3,4])
-puts "g2, g4" 
-p b.move_piece([6,6], [6,4])
-puts "d8, h4" 
-p b.move_piece([0,3], [4,7])

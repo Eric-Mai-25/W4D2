@@ -4,7 +4,7 @@ require_relative "board"
 
 class Display
 
-    attr_reader :cursor
+    attr_reader :cursor, :board
 
     def initialize
         @board = Board.new()
@@ -36,11 +36,39 @@ def make_move()
     puts "Hey Lets play Chess !!!!!"
     dis_inst = Display.new()
     dis_inst.render
-    while true
-        dis_inst.cursor.get_input
-        system "clear"
-        dis_inst.render
-    end
+    # while true
+    b = dis_inst.board
+
+    puts "f2, f3" 
+    p b.move_piece([6,5], [5,5])
+    dis_inst.render
+    sleep(1)
+    puts "e7, e5" 
+    p b.move_piece([1,4], [3,4])
+    dis_inst.render
+    sleep(1)
+    puts "g2, g4" 
+    p b.move_piece([6,6], [4,6])
+    dis_inst.render
+    sleep(1)
+
+    p b.move_piece([6,4], [5,4])
+    dis_inst.render
+    sleep(1)
+
+
+    puts "d8, h4" 
+    p b.move_piece([0,3], [4,7])
+    dis_inst.render
+    sleep(1)
+
+    # p b.move_piece([6,7], [5,6])
+    # dis_inst.render
+    # sleep(1)
+
+    p b.checkmate?(:white)
+
+    dis_inst.render
 end
 
 make_move

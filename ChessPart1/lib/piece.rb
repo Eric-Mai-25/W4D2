@@ -48,13 +48,32 @@ class Piece
 
     end
 
+    def still_in_check?(end_pos)
+        board_dup = @board.dup
+        begin
+            board_dup.move_piece(pos, end_pos)
+        rescue Exception => e
+            p "Failed to check_check with error msg, #{e.message}"
+            return true
+        end
+
+        res_val = board_dup.in_check?(self.color)
+        if res_val == false
+            p "hey I rescued the king"
+            p self
+            p end_pos
+            p pos
+        end
+        return res_val
+    end
+
 end 
 
 class NullPiece < Piece
 
     include Singleton
 
-    def initialize
+    def initialize(*args)
         # if we dont have initialize then its gonna complain abt not passing enough args, which in our case we dont want to do
         @symbol = " "
         @color = :grey
@@ -153,10 +172,10 @@ class Pawn < Piece
                 all_pos_moves << step if !boundary?(step[0], step[1]) && @board[step].empty?
             end
         end
-        p side_attacks
+        
         side_attacks.each do |step|
-
-            if  !boundary?(step[0], step[1]) && @board[step].color != self.color
+            
+            if  !boundary?(step[0], step[1]) && !@board[step].empty? && @board[step].color != self.color
                 all_pos_moves << step
             end
         end
@@ -169,8 +188,8 @@ class Pawn < Piece
     end
 
     def foward_dir
-        return -1 if color == 'white'
-        return 1 if color == ':yellow'
+        return -1 if color == :white
+        return 1 if color == :yellow
     end
 
     def foward_steps(steps=1)
@@ -183,15 +202,11 @@ class Pawn < Piece
             res << [new_row, new_col]
             row, col = new_row , new_col
         }
-        p res
         return res
     end
-
-
 
     def side_attacks
         return [[pos[0]-1,pos[1]-1],[pos[0]-1,pos[1]+1]] if color == :white
         return [[pos[0]+1,pos[1]-1],[pos[0]+1,pos[1]+1]] if color == :yellow
     end
 end
-
